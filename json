@@ -1,0 +1,28 @@
+{
+  "place_id": 221598917,
+  "licence": "Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
+  "osm_type": "node",
+  "osm_id": 7070928704,
+  "lat": "22.080282",
+  "lon": "88.1368456",
+  "display_name": "Sab Nursing Home, Balughata-City Center Road, Durgachak New Colony, Durgachak, Sutahata, Purba Medinipur District, West Bengal, 721602, India",
+  "address": {
+    "amenity": "Sab Nursing Home",
+    "road": "Balughata-City Center Road",
+    "suburb": "Durgachak New Colony",
+    "town": "Durgachak",
+    "county": "Sutahata",
+    "state_district": "Purba Medinipur District",
+    "state": "West Bengal",
+    "ISO3166-2-lvl4": "IN-WB",
+    "postcode": "721602",
+    "country": "India",
+    "country_code": "in"
+  },
+  "boundingbox": [
+    "22.080232",
+    "22.080332",
+    "88.1367956",
+    "88.1368956"
+  ]
+}
