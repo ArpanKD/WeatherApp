@@ -52,7 +52,7 @@ export const WeatherReport = () => {
       }
     };
     fetchCity();
-  }, [lat, long]);
+  }, [lat, long, city]);
 
   useEffect(() => {
     const fetchdata = async () => {
