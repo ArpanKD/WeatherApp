@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./WeatherReport.module.css";
+import { WeatherImage } from "../WeatherImage/WeatherImage";
 import search_icon from "../assets/search.png";
-import clear_icon from "../assets/clear.png";
-import cloud_icon from "../assets/cloud.png";
-import drizzle_icon from "../assets/drizzle.png";
-import humidity_icon from "../assets/humidity.png";
-import rain_icon from "../assets/rain.png";
-import snow_icon from "../assets/snow.png";
-import wind_icon from "../assets/wind.png";
+import { Humidity } from "../Humidity/Humidity";
+import { WindSpeed } from "../WindSpeed/WindSpeed";
+import { CityName } from "../CityName/CityName";
+import { WeatherTemp } from "../WeatherTemp/WeatherTemp";
 
 export const WeatherReport = () => {
   const apiKeyOpenW = "3e45f99f1696eff174f1bade338333d8";
@@ -21,6 +19,7 @@ export const WeatherReport = () => {
   const [humidity, setHumidity] = useState();
   const [windSpeed, setWindSpeed] = useState();
   const [viewCity, setViewCity] = useState();
+  const [iconCode, setIconCode] = useState("01d");
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -59,10 +58,12 @@ export const WeatherReport = () => {
         `https://api.openweathermap.org/data/2.5/weather?q=${currentCity}&units=metric&appid=${apiKeyOpenW}`
       );
       let newData = await response.json();
+
       setTemp(Math.floor(newData.main.temp));
       setHumidity(Math.floor(newData.main.humidity));
       setWindSpeed(Math.floor(newData.wind.speed));
       setViewCity(newData.name);
+      setIconCode(newData.weather[0].icon);
     };
     fetchdata();
   }, [currentCity]);
@@ -103,27 +104,13 @@ export const WeatherReport = () => {
           <img src={search_icon} alt="search" />
         </div>
       </div>
-      <div className={styles.weatherImage}>
-        <img src={cloud_icon} alt="" />
-      </div>
-      <div className={styles.weatherTemp}> {temparature}ºC</div>
-      <div className={styles.weatherLocation}>{viewCity}</div>
-      <div className={styles.dataContainer}>
-        <div className={styles.element}>
-          <img src={humidity_icon} alt="" className={styles.icon} />
-          <div className={styles.data}>
-            <div className={styles.humidityPercent}>{humidity}% </div>
-            <div className={styles.text}>Humidity</div>
-          </div>
-        </div>
 
-        <div className={styles.element}>
-          <img src={wind_icon} alt="" className={styles.icon} />
-          <div className={styles.data}>
-            <div className={styles.humidityPercent}>{windSpeed} KM/Hr</div>
-            <div className={styles.text}>Wind Speed</div>
-          </div>
-        </div>
+      <WeatherImage iconCode={iconCode} />
+      <WeatherTemp temparature={temparature} />
+      <CityName viewCity={viewCity} />
+      <div className={styles.dataContainer}>
+        <Humidity humidity={humidity} />
+        <WindSpeed windSpeed={windSpeed} />
       </div>
     </div>
   );

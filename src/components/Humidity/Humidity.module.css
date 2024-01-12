@@ -1,0 +1,19 @@
+.element {
+  margin: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.icon {
+  margin-top: 10px;
+}
+.data {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.text {
+  font-size: 15px;
+  font-weight: 400;
+}
