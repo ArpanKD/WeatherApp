@@ -9,12 +9,8 @@ import { WeatherTemp } from "../WeatherTemp/WeatherTemp";
 
 export const WeatherReport = () => {
   const apiKeyOpenW = "3e45f99f1696eff174f1bade338333d8";
-  const apiKeyOpenCage = "e64d9278b8cd40728e16291c480a4cb1";
   const [inputText, setInputText] = useState();
-  const [currentCity, setcurrentCity] = useState("Delhi");
-
-  const [lat, setLat] = useState(0);
-  const [long, setLong] = useState(0);
+  const [currentCity, setcurrentCity] = useState();
   const [temparature, setTemp] = useState();
   const [humidity, setHumidity] = useState();
   const [windSpeed, setWindSpeed] = useState();
@@ -22,50 +18,43 @@ export const WeatherReport = () => {
   const [iconCode, setIconCode] = useState("01d");
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setLat(position.coords.latitude);
-      setLong(position.coords.longitude);
-    });
-
-    const fetchCity = async () => {
-      if (lat && long) {
-        console.log(lat, long);
-        const response = await fetch(
-          `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${long}&key=${apiKeyOpenCage}&no_annotations=1`
-        );
-        const data = await response.json();
-        console.log(data);
-        if (
-          data.results[0].components.city ||
-          data.results[0].components.county
-        ) {
-          if (data.results[0].components.city) {
-            setcurrentCity(data.results[0].components.city);
-            console.log(currentCity);
-          } else if (data.results[0].components.county) {
-            setcurrentCity(data.results[0].components.county);
-            console.log(currentCity);
-          }
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const long = position.coords.longitude;
+          const response = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=metric&appid=${apiKeyOpenW}`
+          );
+          const newData = await response.json();
+          setTemp(Math.floor(newData.main.temp));
+          setHumidity(Math.floor(newData.main.humidity));
+          setWindSpeed(Math.floor(newData.wind.speed));
+          setViewCity(newData.name);
+          setIconCode(newData.weather[0].icon);
+        },
+        () => {
+          setcurrentCity("new delhi");
         }
-      }
-    };
-    fetchCity();
-  }, [lat, long, currentCity]);
+      );
+    }
+  }, []);
 
   useEffect(() => {
     const fetchdata = async () => {
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${currentCity}&units=metric&appid=${apiKeyOpenW}`
       );
-      let newData = await response.json();
-
+      const newData = await response.json();
       setTemp(Math.floor(newData.main.temp));
       setHumidity(Math.floor(newData.main.humidity));
       setWindSpeed(Math.floor(newData.wind.speed));
       setViewCity(newData.name);
       setIconCode(newData.weather[0].icon);
     };
-    fetchdata();
+    if (currentCity) {
+      fetchdata();
+    }
   }, [currentCity]);
 
   const handleChange = (e) => {
