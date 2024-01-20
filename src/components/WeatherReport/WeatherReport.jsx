@@ -8,7 +8,6 @@ import { CityName } from "../CityName/CityName";
 import { WeatherTemp } from "../WeatherTemp/WeatherTemp";
 
 export const WeatherReport = () => {
-  const apiKeyOpenW = "3e45f99f1696eff174f1bade338333d8";
   const [inputText, setInputText] = useState();
   const [currentCity, setcurrentCity] = useState();
   const [temparature, setTemp] = useState();
@@ -24,7 +23,7 @@ export const WeatherReport = () => {
           const lat = position.coords.latitude;
           const long = position.coords.longitude;
           const response = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=metric&appid=${apiKeyOpenW}`
+            `http://localhost:3001/api/getWeatherbyLat?lat=${lat}&lon=${long}`
           );
           const newData = await response.json();
           setTemp(Math.floor(newData.main.temp));
@@ -43,7 +42,7 @@ export const WeatherReport = () => {
   useEffect(() => {
     const fetchdata = async () => {
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${currentCity}&units=metric&appid=${apiKeyOpenW}`
+        `http://localhost:3001/api/getWeather?q=${currentCity}`
       );
       const newData = await response.json();
       setTemp(Math.floor(newData.main.temp));
