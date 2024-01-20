@@ -23,7 +23,7 @@ export const WeatherReport = () => {
           const lat = position.coords.latitude;
           const long = position.coords.longitude;
           const response = await fetch(
-            `http://localhost:3001/api/getWeatherbyLat?lat=${lat}&lon=${long}`
+            `/api/getWeatherbyLat?lat=${lat}&lon=${long}`
           );
           const newData = await response.json();
           setTemp(Math.floor(newData.main.temp));
@@ -41,9 +41,7 @@ export const WeatherReport = () => {
 
   useEffect(() => {
     const fetchdata = async () => {
-      const response = await fetch(
-        `http://localhost:3001/api/getWeather?q=${currentCity}`
-      );
+      const response = await fetch(`/api/getWeather?q=${currentCity}`);
       const newData = await response.json();
       setTemp(Math.floor(newData.main.temp));
       setHumidity(Math.floor(newData.main.humidity));
